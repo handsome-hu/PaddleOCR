@@ -1,20 +1,18 @@
 # Version: 2.0.0
-FROM registry.baidubce.com/paddlepaddle/paddle:2.0.0
-
+FROM registry.baidubce.com/paddlepaddle/paddle:2.0.0-gpu-cuda10.1-cudnn7
 
 # PaddleOCR base on Python3.7
 RUN pip3.7 install --upgrade pip -i https://mirror.baidu.com/pypi/simple
+
 RUN pip3.7 install paddlehub --upgrade -i https://mirror.baidu.com/pypi/simple
 
-# 服务版与轻量版
-#RUN git clone https://gitee.com/yarnk/bd-ocr-server.git /Paddle0CR
 RUN git clone https://github.com/handsome-hu/PaddleOCR.git /PaddleOCR
+
 WORKDIR /PaddleOCR
 
 RUN pip3.7 install -r requirements.txt -i https://mirror.baidu.com/pypi/simple
 
 RUN mkdir -p /PaddleOCR/inference/
-
 # 下载解压模型开始:如果切换为服务端模型，记得修改deploy/hubserving/cr-ystem/params.py下对应的模型位置
 # Download orc detect model(light version). if you want to change normal version, you can change ch_ppocr_mobile_v2.0_det_infer to ch_ppocr_server_v2.0_det_infer, also remember change det_model_dir in deploy/hubserving/ocr_system/params.py）
 # 检测模型-推理模型：xxx_det_infer.tar
